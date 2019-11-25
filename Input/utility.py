@@ -1,4 +1,10 @@
+# from Input.MatchMain import *
+
+from Input.MatchMain import MainController
+
+
 def create_sample_data(df):
+
     '''
 
     :param df:
@@ -10,4 +16,11 @@ def create_sample_data(df):
     for li in sample_df.values:
         sample_li.append(li)
 
+    print(sample_li)
     return sample_li
+
+def TriggerFunction(all_parameters):
+    main_controller = MainController()
+    df_output =  main_controller.flow_controller(all_parameters["dfITM"], all_parameters["dfSource"], \
+                                    all_parameters["replacewords"], all_parameters)
+    return df_output

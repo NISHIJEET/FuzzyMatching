@@ -1,0 +1,80 @@
+{% extends "Navigation.html" %}
+{% load static %}
+{% block content %}
+
+
+    <div class="flex-subcontaioner">
+        <div class="subnavigation" id="Input1" style="background-color: white"><a id="columns" style=" text-decoration: none; color: black" class="link navlink" href="{% url 'Source' %}">Output</a>
+        </div>
+{#        <div class="subnavigation" id="Input2"><a id="concate" style=" text-decoration: none;" class="link navlink" href="{}">Reports</a></div>#}
+    </div>
+
+    <div class="InputFileds instruction">
+        This section displays the result for the selections made by user in previous sections.
+    </div>
+
+
+
+    <div style="display: flex;flex-direction: row;margin-left: 50px; width: 94%">
+
+        <input type="text" id="myInput" onkeyup="mySearchFunction()" placeholder="Search results.."
+               title="Type in something" style="background-image: url({% static 'Images/icons8-search-24.png' %}) ">
+{#        <form method="POST" enctype="multipart/form-data" action="{% url 'Output' %}"  style="margin-left: 50%">#}
+{#            {% csrf_token %}#}
+{#            <div class="exp" >#}
+{#                 <button class="button" type="submit" value="Export output" style="margin-top: 10px;height: 30px;width: 130px"  >Export Results</button>#}
+{#                <img src="{% static 'Images/icons8-microsoft-excel-48.png' %}" width="30" height="35" title="Export results to an excel file.">#}
+{#            </div>#}
+{#        </form>#}
+     <a class="next" style="text-decoration: none;color: darkorange;margin-left: 60%" href="{% url 'Download' %}">Download</a>
+    </div>
+
+    <h4 class="topsection" >Match Results</h4>
+
+    <table class="displaytable" id="myTable">
+        {% for cell in df.columns.tolist %}
+            <th style="background-color: lightgray;">{{ cell }}&nbsp;</th>
+        {% endfor %}
+
+
+        {% for index,row in df.iterrows %}
+            <tr style="width: 40%">
+                {% for str_val in row.values %}
+                    <th>{{ str_val }}&nbsp;</th>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    
+    </div>
+
+    <script>
+        function mySearchFunction() {
+            var input, filter, table, tr, td, i,j,tw,th, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            th = table.getElementsByTagName("th");
+            tw = document.getElementById('myTable').rows[0].cells.length
+            console.log(tw);
+            for (i = 0; i < tr.length; i++) {
+                for (j=0 ; j< th.length ; j++){
+                td = tr[i].getElementsByTagName("th")[j];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        console.log(txtValue)
+                        tr[i].style.display = "";
+                        break;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+                }
+            }
+        }
+    </script>
+
+{% endblock %}
+
